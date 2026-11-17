@@ -50,7 +50,8 @@ cost real time or money to learn. Details and evidence: `references/`.
 ## When starting a 3D/video project, do this on turn 1
 
 - Ask: may I download CC0 assets (Poly Haven, ambientCG)? Which audio licences are OK? Who signs in to paid or
-  account-gated tools (TTS, sound libraries, asset stores)? What is the delivery length, aspect, size limit?
+  account-gated tools (TTS, Freesound, Sketchfab, Fab)? Write the login map (`references/11-sources-and-research.md`)
+  and test each sign-in from the agent's own browser. What is the delivery length, aspect, size limit?
 - Benchmark one frame per quality tier on the actual render machine; multiply by frame count; write the totals in
   the plan. Decide early whether delivery is "half res + upscale".
 - Write `SPEC.md` (look, rules, module ownership, iteration budget), `timing.json`, and `RESUME.md` (append-only log
@@ -71,6 +72,7 @@ cost real time or money to learn. Details and evidence: `references/`.
 | Agent splits, briefs, model per role, resume after interruptions | `references/08-multi-agent.md` |
 | Where the tokens went and how to wait cheaply | `references/09-cost.md` |
 | Failures and their root causes | `references/10-failures.md` |
+| Asset and sound libraries, logins, online research, scouts | `references/11-sources-and-research.md` |
 
 Helpers: `scripts/partial_rerender.py` (seed a new cut from the previous one with hardlinks, shifts and deletions),
 `scripts/seam_check.py` (frame-to-frame change at seams vs neighbours).

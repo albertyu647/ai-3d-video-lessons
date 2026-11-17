@@ -36,7 +36,7 @@ The client and product are not named, and no script or brand material is include
 
 - **A skill any coding agent can load.** [`SKILL.md`](SKILL.md) holds the 12 rules that mattered most and a turn-1
   checklist; it points to the details only when needed.
-- **Ten reference notes with the evidence.** Each rule comes with what happened, the numbers, and how to apply it.
+- **Eleven reference notes with the evidence.** Each rule comes with what happened, the numbers, and how to apply it.
 - **Templates.** A [timing file](templates/timing.example.json) that drives picture, sound and subtitles, and the
   [agent brief](templates/agent-brief.md) format that made parallel rounds work.
 - **Two small scripts.** [`partial_rerender.py`](scripts/partial_rerender.py) seeds a new cut from the previous one
@@ -72,7 +72,7 @@ The twelve below are the ones I'd pay for again. Each links to its reference not
    zero-token background waiter for the main thread, hooks that block sleep loops. → [cost](references/09-cost.md)
 5. **Real assets for surfaces, code for structure.** Procedural materials plateaued; scanned CC0 textures fixed them.
    Free libraries had the dressing but not the hero props, so a scout runs alongside builders working on
-   proxies. → [scene building](references/03-scene-building.md)
+   proxies. → [scene building](references/03-scene-building.md) · [sources and research](references/11-sources-and-research.md)
 6. **Bake physics, then fix it.** Rigid bodies baked to keys; a post-bake "rest hold" removed the jitter of settled
    parts; an interpenetration script found 115 clipping pairs nobody had noticed.
 7. **Benchmark render advice on your own footage.** The animated seed made flicker worse, the temporal denoiser gave
@@ -89,7 +89,8 @@ The twelve below are the ones I'd pay for again. Each links to its reference not
 12. **One fresh, image-only critic per round, one fix round.** It caught stale test outputs and a fix that was
     physically right but out of frame. Open-ended scoring loops only drifted.
 
-More: [music and sound](references/06-music-and-sfx.md) ·
+More: [where assets, sounds and know-how came from](references/11-sources-and-research.md) ·
+[music and sound](references/06-music-and-sfx.md) ·
 [multi-agent splits and resuming](references/08-multi-agent.md) · [failures and root causes](references/10-failures.md)
 
 ## Architecture
@@ -160,6 +161,7 @@ references/
   08-multi-agent.md           briefs, ownership, model per role, resuming after interruptions
   09-cost.md                  where the tokens went, waiting math, hooks, red herrings
   10-failures.md              symptom → root cause → fix table
+  11-sources-and-research.md  asset and sound libraries, the login map, scouts, online research
 templates/                    timing.example.json, agent-brief.md
 scripts/                      partial_rerender.py, seam_check.py
 ```
@@ -170,9 +172,10 @@ scripts/                      partial_rerender.py, seam_check.py
 |---|---|
 | Agents | Claude Code (Opus, Sonnet), Workflow scripts, subagents, hooks |
 | 3D | [Blender](https://www.blender.org) 5.2 headless, Cycles (OptiX / Metal), Bullet rigid bodies, [Intel OIDN](https://www.openimagedenoise.org) |
-| Assets | [Poly Haven](https://polyhaven.com) and [ambientCG](https://ambientcg.com) (CC0) |
+| Assets | [Poly Haven](https://polyhaven.com) and [ambientCG](https://ambientcg.com) (CC0, used); [Sketchfab](https://sketchfab.com) and [Fab](https://www.fab.com) (researched, login-gated) |
 | Voice | ElevenLabs, local TTS ([Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS), [OmniVoice](https://github.com/k2-fsa/OmniVoice), Ming), [parakeet ASR](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2), [Qwen3-ForcedAligner](https://huggingface.co/mlx-community/Qwen3-ForcedAligner-0.6B-8bit) via [mlx-audio](https://github.com/Blaizzy/mlx-audio) |
-| Sound | CC0 field recordings, a CC BY music track edited in code |
+| Sound | [Freesound](https://freesound.org) CC0 field recordings; [Mixkit](https://mixkit.co/free-sound-effects/) and Sonniss as fallbacks; a CC BY music track edited in code |
+| Research | YouTube transcripts via [last30days](https://github.com/mvanhorn/last30days-skill), r/blender, Blender Artists, Blender developer forum |
 | Post | ffmpeg (`atadenoise`, x264), ImageMagick, numpy, scipy, Pillow, OpenCV |
 
 ## Hardware

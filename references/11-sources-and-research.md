@@ -1,0 +1,102 @@
+# Where assets, sounds and know-how came from
+
+Most of the realism came from things other people made: scanned textures, models, HDRIs, field recordings, a music
+track, and advice from people who render for a living. This note lists every source the agents tried, what they got
+from each, and what got in the way.
+
+## The login map decides what an agent can use
+
+The agents worked through a headless copy of my own Chrome profile, so they could read any site I could. They were
+never allowed to sign in, create accounts, enter passwords or pay. That one rule split every library into two groups:
+
+| Source | What it has | Account needed | What happened |
+|---|---|---|---|
+| [Poly Haven](https://polyhaven.com) | CC0 models, textures, HDRIs | no | **Everything that shipped**: 30 models, 4 HDRIs, most textures |
+| [ambientCG](https://ambientcg.com) | CC0 textures | no | Textures only; no models for anything on the list |
+| [Fab](https://www.fab.com) / Megascans | Scanned assets, a free-listing window | yes (Epic) | Agent got a 401 and no session; returned a $0 shortlist for me. Nothing used |
+| [Sketchfab](https://sketchfab.com) | Huge model catalogue, mixed licences | yes, to download | Best rigged hand was here (CC BY); read through the public API, not downloaded |
+| [BlenderKit](https://www.blenderkit.com) | Blender-native assets | yes | Skipped: no account |
+| [Freesound](https://freesound.org) | Field recordings, filter by CC0 | yes, to download | **All the foley**: 56 CC0 recordings, 49 in the mix, after I signed in myself |
+| [Pixabay](https://pixabay.com/sound-effects/) | Sound effects | sometimes | Many entries are re-uploads from Freesound; not needed |
+| [Mixkit](https://mixkit.co/free-sound-effects/) | Free sound effects | no | Fallback, never needed |
+| [Sonniss GDC bundles](https://sonniss.com/gameaudiogdc) | Multi-GB royalty-free libraries | no | Fallback for machinery, never needed |
+
+Write this table on day 1 and ask the human to sign in to the two or three that matter before the agents start. The
+sound scout's first report said "Freesound: not signed in"; a session later I signed in and the next round downloaded
+everything it needed in one pass. The asset store with a time-limited free window (Megascans) went the other way: I had signed in, but the
+agent's headless profile had no store session (the account lookup returned 401), it was not allowed to fix that, and
+the window closed with nothing taken. Test the sign-in from the agent's browser, not yours.
+
+## Assets: what worked
+
+- **Account-free CC0 libraries carried the film.** About 940 MB from Poly Haven and ambientCG: crane, barrels, crates,
+  shelving, pipes, ducts, lamps, cables, tyres, stones, two sunset skies and two studio HDRIs. All rendered on the
+  render PC with no missing images on the first try.
+- **Ask for a shopping list per builder, not "find assets".** One scout with a list grouped by the three builders
+  found 7 usable models in ~6 minutes. The builders kept working on proxies behind a single swap function, so the
+  scout never blocked them.
+- **Require a `SOURCE.md` per asset** (URL, author, licence, date) and generate the credits from those files. It also
+  catches false positives: one "Fab" item turned out to be a Poly Haven crate by an author named Fabi_G.
+- **Hero props are not in free libraries.** Nothing free matched the product-specific props (the end shot's screen
+  device, for one). Plan to build those in code from the start, and spend the scout on dressing.
+
+## Rigged characters: research first, then decide whether you need one
+
+A shot needed a hand passing a card. An 8-minute, read-only research agent ranked candidates:
+
+1. A rigged hand on Sketchfab, CC BY 4.0, ~70k faces, a bone per phalanx, FK only, no forearm, needs a login.
+2. Blender Studio's free Human Base Meshes (CC0), unrigged.
+3. A hand generated with MPFB (CC0 output).
+4. Fab: almost all free hands were low-poly game or VR hands, wrong for a close-up. Poly Haven: none.
+
+It read Sketchfab's public API (`api.sketchfab.com/v3/models/<uid>`) for licence, face count and rig details without
+downloading anything, and listed the risks of the top pick (no forearm, credit required, unverified rig). Then the
+story notes removed the hand from the shot entirely. Research was cheap; downloading, rigging and animating a hand
+would not have been. **Research the option, but don't commit to a character asset until the shot survives the
+next story review.**
+
+## Sound: pick by measurement, then listen
+
+- The scout searched Freesound with the licence filter `license:"Creative Commons 0"`, sorted by downloads, and
+  returned 2-3 candidates for each of 14 needs. It chose by title and description and could not listen, so every pick
+  was then measured (duration, peak, RMS, onset, spectral centroid). A sound titled "scanner" was a 96 Hz rumble.
+- Confirm the licence on each sound's own page, not the search filter.
+- Keep one credits file generated by a script; CC0 needs no credit, credit it anyway.
+- The music came from a separate search for a CC BY track, with the attribution string, BPM grid and section map
+  returned in the same report (see [music and sound](06-music-and-sfx.md)).
+
+## Research: ask people who render, then benchmark it yourself
+
+Midway I asked a background agent what Blender artists say adds realism cheaply. It was told to gather information
+only and change nothing. Sources:
+
+- about 50 YouTube videos through the YouTube-only part of the [last30days](https://github.com/mvanhorn/last30days-skill)
+  skill (local search plus transcripts, no paid credits)
+- r/blender (through old.reddit), Blender Artists and the Blender developer forum, read in the signed-in browser
+- Blender Stack Exchange hit a bot check; it was skipped, not worked around
+
+Before ranking anything, the agent read the pipeline's code and listed what was **already** on, so the advice didn't
+repeat itself. That turned up a real gap: two files assumed "the compositor will bloom it", but no compositor ran.
+
+The ranked list (bloom, vector motion blur, subtle camera noise, chromatic aberration, vignette, grain; against real
+volumetrics, lens flares, AI upscaling) then went through an A/B render on the film's own frames:
+
+| Trick | Result on our footage |
+|---|---|
+| Bloom | First setting (strength 0.16, threshold 1.2) put a milky veil over the sunlit floor; kept at 0.12 / 1.5 |
+| Vector motion blur | Smoothed motion; render cost 0 to +3.5% |
+| Camera noise | Kept, but it raises static-frame change 10x, so fade it across cuts and damp it on holds |
+| CA, vignette, grain | Kept, in post after denoise and upscale; ~0.03 s per frame |
+
+The ordering rule the research produced (HDR effects in the compositor, grain and CA after denoise and upscale) is in
+[rendering](04-rendering.md). An earlier research pass on render flicker gave advice (animated seed, temporal
+denoiser) that the same kind of benchmark disproved.
+
+## Rules
+
+- Write the login map on day 1; the human signs in, agents never do.
+- Prefer account-free CC0 libraries; use CC BY with credits; never NC.
+- Time-box research agents (8-20 minutes) and keep them read-only: a ranked shortlist with risks, nothing applied.
+- Public APIs and listing pages are enough to compare licence, polycount and rig before any download.
+- A `SOURCE.md` next to every downloaded file; credits are generated, not hand-written.
+- Every piece of advice from the internet gets an A/B on your own frames before it ships.
