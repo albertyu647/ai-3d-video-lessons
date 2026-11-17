@@ -1,0 +1,27 @@
+{
+ "note": "Single source of truth for time. All times in seconds. frame = round(t*fps)+1, t = (frame-1)/fps. Scene code, sound, subtitles and render ranges read this file; never hard-code frames.",
+ "fps": 24,
+ "frame_start": 1,
+ "frame_end": 240,
+ "resolution": [1920, 804],
+ "shots": {
+  "s1": {"title": "Problem", "t0": 0.0, "t1": 4.0, "f0": 1, "f1": 96},
+  "s2": {"title": "Payoff", "t0": 4.0, "t1": 10.0, "f0": 97, "f1": 240}
+ },
+ "events": {
+  "s1_drop": 1.35,
+  "s1_drop_snd": 1.30,
+  "s2_reveal": 6.12,
+  "s2_text_in": 7.5
+ },
+ "event_frames": {"s1_drop": 33, "s1_drop_snd": 32, "s2_reveal": 148, "s2_text_in": 181},
+ "vo": [
+  {"line": 1, "start": 0.25, "file": "audio/vo/line_1.wav",
+   "words": [{"text": "Example", "t": 0.30, "end": 0.71}, {"text": "line.", "t": 0.78, "end": 1.20}]}
+ ],
+ "music": {
+  "track": "<title>", "artist": "<artist>", "licence": "CC BY 4.0",
+  "credit": "Music: '<title>' by <artist> (edited) - CC BY 4.0",
+  "bpm": 133.33, "bar_s": 1.8, "first_downbeat_s": 0.0
+ }
+}

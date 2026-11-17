@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.pyc
+.env*
+*.pdf
+renders/
+frames/
+*.blend
+*.wav
+*.mp4
